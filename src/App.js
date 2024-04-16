@@ -4,6 +4,7 @@ import React from "react";
 import "./App.css";
 import Header from "./features/Header";
 import Sidebar from "./features/Sidebar";
+import Feed from "./features/Feed";
 
 function App() {
   return (
@@ -11,9 +12,9 @@ function App() {
       <Header />
       <div className="app__body">
         <Sidebar />
+        <Feed />
       </div>
-      {/* App body */}
-      {/* Feed */}
+
       {/* Widgets */}
     </div>
   );
