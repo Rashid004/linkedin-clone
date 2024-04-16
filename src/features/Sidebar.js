@@ -4,6 +4,13 @@ import { Avatar } from "@mui/material";
 import "./Sidebar.css";
 
 function Sidebar() {
+  const recentItem = (topic) => (
+    <div className="sidebar__recentItem">
+      <span className="sidebar__hash">#</span>
+      <p>{topic}</p>
+    </div>
+  );
+
   return (
     <div className="sidebar">
       <div className="sidebar__top">
@@ -20,13 +27,20 @@ function Sidebar() {
           <p>Who viewed you</p>
           <p className="sidebar__statNumber">3,944</p>
         </div>
-      </div>
-      <div className="sidebar__stat">
-        <p>Views on post</p>
-        <p className="sidebar__statNumber">1,364</p>
+        <div className="sidebar__stat">
+          <p>Views on post</p>
+          <p className="sidebar__statNumber">1,364</p>
+        </div>
       </div>
       <div className="sidebar__botttom">
         <p>Recent</p>
+        {recentItem("react")}
+        {recentItem("developer")}
+        {recentItem("job")}
+        {recentItem("react")}
+        {recentItem("softwareengineerig")}
+        {recentItem("java")}
+        {recentItem("accenture")}
       </div>
     </div>
   );
