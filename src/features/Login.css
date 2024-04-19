@@ -34,7 +34,9 @@
   background-color: #0074b1;
   border-radius: 5px;
   color: #fff;
+  cursor: pointer;
 }
 .login__register {
   color: #0177b7;
+  cursor: pointer;
 }
