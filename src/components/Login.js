@@ -87,8 +87,53 @@ const Hero = styled.div`
       line-height: 2;
     }
   }
+
+  img {
+    /* z-index: -1; */
+    width: 700px;
+    height: 670px;
+    position: absolute;
+    top: 50px;
+    right: -150px;
+    bottom: -2px;
+
+    @media (max-width: 768px) {
+      top: 230px;
+      width: initial;
+      position: initial;
+      height: initial;
+    }
+  }
 `;
 
+const Form = styled.div`
+  margin-top: 100px;
+  width: 408px;
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
+`;
+
+const Google = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  width: 100%;
+  height: 56px;
+  border-radius: 28px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 /60%), inset 0 0 0 1px rgb(0 0 0 / 0%),
+    inset 0 0 0 1px rgb(0 0 0 / 0);
+
+  font-size: 20px;
+  vertical-align: middle;
+  transition-duration: 167ms;
+  color: rgba(0, 0, 0, 0.6);
+  &:hover {
+    background-color: rgba(207, 207, 207, 0.25);
+    color: rgba(0, 0, 0, 0.75);
+  }
+`;
 const Login = (props) => {
   return (
     <Container>
@@ -105,7 +150,14 @@ const Login = (props) => {
         <Hero>
           {" "}
           <h1>Welcome to your professional community</h1>
+          <img src="images/login-hero.svg" alt="Home_image" />
         </Hero>
+        <Form>
+          <Google>
+            <img src="images/google.svg" alt="Google-svg" />
+            Sign in with google
+          </Google>
+        </Form>
       </Section>
     </Container>
   );
