@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  /* grid-area: leftside; */
+  grid-area: leftside;
 `;
 
 const ArtCard = styled.div`

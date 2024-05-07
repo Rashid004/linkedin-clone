@@ -243,13 +243,13 @@ const Header = (props) => {
             </User>
 
             <Work>
-              <a>
+              <Link>
                 <img src="/images/nav-work.svg" alt="" />
-              </a>
-              <span>
-                Work
-                <img src="/images/down-icon.svg" alt="" />
-              </span>
+                <span>
+                  Work
+                  <img src="/images/down-icon.svg" alt="" />
+                </span>
+              </Link>
             </Work>
           </NavListWrap>
         </Nav>
