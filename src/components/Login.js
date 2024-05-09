@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { signInAPI } from "../action/signIn";
+import { signInWithgoogle } from "../actions/auth";
 
 const Container = styled.div`
   padding: 0;
@@ -150,12 +150,11 @@ const Login = (props) => {
       </Nav>
       <Section>
         <Hero>
-          {" "}
           <h1>Welcome to your professional community</h1>
           <img src="images/login-hero.svg" alt="Home_image" />
         </Hero>
         <Form>
-          <Google onClick={() => props.signInAPI()}>
+          <Google onClick={() => signInWithgoogle()}>
             <img src="images/google.svg" alt="Google-svg" />
             Sign in with google
           </Google>
@@ -164,8 +163,8 @@ const Login = (props) => {
     </Container>
   );
 };
-const mapDispatchToProps = (dispatch) => ({
-  signInAPI: () => dispatch(signInAPI()),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   signInAPI: () => dispatch(signInAPI()),
+// });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
