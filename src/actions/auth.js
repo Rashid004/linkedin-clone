@@ -1,7 +1,8 @@
 /** @format */
 
-import { signInWithPopup } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
+import { setUser } from "../reducers/userSlice";
 
 // export function signInAPI() {
 //   return (dispatch) => {
@@ -19,11 +20,38 @@ import { auth, provider } from "../firebase";
 //   };
 // }
 
-export const signInWithgoogle = async () => {
-  try {
-    const payload = await signInWithPopup(auth, provider);
-    return payload;
-  } catch (err) {
-    console.log(err.message);
-  }
+// export const signInWithgoogle = async () => {
+//   try {
+//     const payload = await signInWithPopup(auth, provider);
+//     const { displayName, email, photoURL, uid } = payload.user;
+//     const userData = { displayName, email, photoURL, uid };
+//     console.log(payload);
+//     store.dispatch(setUser(userData));
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+
+export const signInWithGoogle = () => {
+  return async (dispatch) => {
+    try {
+      const payload = await signInWithPopup(auth, provider);
+      console.log(payload);
+      dispatch(setUser(payload.user));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 };
+
+export function getUserAuth() {
+  return (dispatch) => {
+    const userAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setUser(userAuth.user));
+      } else {
+        dispatch(setUser(null));
+      }
+    });
+  };
+}

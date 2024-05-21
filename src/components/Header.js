@@ -1,5 +1,6 @@
 /** @format */
 
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -177,7 +178,8 @@ const Work = styled(User)`
   border-left: 1px solid rgba(0, 0, 0, 0.08);
 `;
 
-const Header = (props) => {
+const Header = () => {
+  const user = useSelector((state) => state.userState.user);
   return (
     <Container>
       <Content>
@@ -233,9 +235,15 @@ const Header = (props) => {
 
             <User>
               <a>
-                <img src="/images/user.svg" alt="" />
-                <span>Me</span>
-                <img src="/images/down-icon.svg" alt="" />
+                {user && user.photoURL ? (
+                  <img src={user.photoURL} alt="User" />
+                ) : (
+                  <img src="/images/user.svg" alt="" />
+                )}
+                <span>
+                  Me
+                  <img src="/images/down-icon.svg" alt="" />
+                </span>
               </a>
               <SignOut>
                 <a>Sign Out</a>

@@ -1,9 +1,11 @@
 /** @format */
 
 import styled from "styled-components";
-import { connect } from "react-redux";
-import { signInWithgoogle } from "../actions/auth";
-
+// import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { signInWithGoogle } from "../actions/auth";
 const Container = styled.div`
   padding: 0;
 `;
@@ -137,6 +139,19 @@ const Google = styled.button`
   }
 `;
 const Login = (props) => {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.userState.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user, navigate]);
+
+  const handleSignInWithGoogle = () => {
+    dispatch(signInWithGoogle());
+  };
   return (
     <Container>
       <Nav>
@@ -154,7 +169,7 @@ const Login = (props) => {
           <img src="images/login-hero.svg" alt="Home_image" />
         </Hero>
         <Form>
-          <Google onClick={() => signInWithgoogle()}>
+          <Google onClick={handleSignInWithGoogle}>
             <img src="images/google.svg" alt="Google-svg" />
             Sign in with google
           </Google>
@@ -163,6 +178,11 @@ const Login = (props) => {
     </Container>
   );
 };
+// const mapStateToProps = (state) => {
+//   return {
+//     user: state.userState.user,
+//   };
+// };
 // const mapDispatchToProps = (dispatch) => ({
 //   signInAPI: () => dispatch(signInAPI()),
 // });
