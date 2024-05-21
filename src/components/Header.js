@@ -1,8 +1,9 @@
 /** @format */
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { signOutApi } from "../actions/auth";
 
 const Container = styled.div`
   background-color: white;
@@ -147,6 +148,7 @@ const SignOut = styled.div`
   font-size: 16px;
   text-align: center;
   transition-duration: 167ms;
+  cursor: pointer;
 `;
 
 const User = styled(NavList)`
@@ -180,6 +182,11 @@ const Work = styled(User)`
 
 const Header = () => {
   const user = useSelector((state) => state.userState.user);
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(signOutApi());
+  };
   return (
     <Container>
       <Content>
@@ -245,7 +252,7 @@ const Header = () => {
                   <img src="/images/down-icon.svg" alt="" />
                 </span>
               </a>
-              <SignOut>
+              <SignOut onClick={handleSignOut}>
                 <a>Sign Out</a>
               </SignOut>
             </User>

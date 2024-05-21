@@ -1,6 +1,9 @@
 /** @format */
 
 import styled from "styled-components";
+import PostModal from "./PostModal";
+import { useState } from "react";
+import { current } from "@reduxjs/toolkit";
 
 const Container = styled.div`
   grid-area: main;
@@ -191,13 +194,33 @@ const SocialAction = styled.div`
 `;
 
 function Main() {
+  const [showModel, setShowModel] = useState("close");
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    // if (e.target !== e.currentTarget) {
+    //   return;
+    // }
+    // switch (showModel) {
+    //   case "open":
+    //     setShowModel("close");
+    //     break;
+    //   case "close":
+    //     setShowModel("open");
+    //     break;
+    //   default:
+    //     setShowModel("close");
+    //     break;
+    // }
+    setShowModel((prev) => !prev);
+  };
   return (
     <Container>
       <ShareBox>
         Share
         <div>
           <img src="/images/user.svg" alt="" />
-          <button>Start a post</button>
+          <button onClick={handleClick}>Start a post</button>
         </div>
         <div>
           <button>
@@ -278,6 +301,7 @@ function Main() {
           </SocialAction>
         </Article>
       </div>
+      <PostModal showModel={showModel} handleClick={handleClick} />
     </Container>
   );
 }

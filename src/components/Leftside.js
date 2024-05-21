@@ -1,5 +1,6 @@
 /** @format */
 
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -158,6 +159,8 @@ const CommunityCard = styled(ArtCard)`
 `;
 
 const Leftside = (props) => {
+  const user = useSelector((state) => state.userState.user);
+
   return (
     <Container>
       <ArtCard>
@@ -166,7 +169,7 @@ const Leftside = (props) => {
 
           <a>
             <Photo />
-            <Link>Welcome, there!</Link>
+            <Link>Welcome, {user ? user.displayName : "U"}!</Link>
           </a>
           <a>
             <AddPhotoText>Add a photo</AddPhotoText>

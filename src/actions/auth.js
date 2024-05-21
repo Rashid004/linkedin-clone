@@ -1,6 +1,6 @@
 /** @format */
 
-import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import { setUser } from "../reducers/userSlice";
 
@@ -55,3 +55,14 @@ export function getUserAuth() {
     });
   };
 }
+
+export const signOutApi = () => {
+  return async (dispatch) => {
+    try {
+      const authSignOut = await signOut(auth);
+      dispatch(setUser(authSignOut.null));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
