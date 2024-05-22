@@ -5,6 +5,9 @@ import { GoogleAuthProvider, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
+import "firebase/firestore";
+import "firebase/storage";
+
 const firebaseConfig = {
   apiKey: "AIzaSyAmYi7rnMBoDopILDUJNamMAAmWpctnl6g",
   authDomain: "linkedin-clone-3465b.firebaseapp.com",

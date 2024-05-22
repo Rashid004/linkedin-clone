@@ -1,7 +1,7 @@
 /** @format */
 
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { auth, provider } from "../firebase";
+import db, { auth, provider, storage } from "../firebase";
 import { setUser } from "../reducers/userSlice";
 
 // export function signInAPI() {
@@ -65,4 +65,53 @@ export const signOutApi = () => {
       console.log(err);
     }
   };
+};
+
+export const postArticleApi = async (payload) => {
+  try {
+    if (payload.image) {
+      const imageRef = storage.ref(`images/${payload.image.name}`);
+      const uploadTask = imageRef.put(payload.image);
+
+      uploadTask.on("state_changed", (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Progress: ${progress}%`);
+
+        if (snapshot.state === "RUNNING") {
+          console.log(`Progress: ${progress}%`);
+        }
+      });
+
+      const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+
+      await db.collection("articles").add({
+        actor: {
+          description: payload.user.email,
+          title: payload.user.displayName,
+          date: payload.timestamp,
+          image: payload.user.photoURL,
+        },
+        video: payload.video,
+        sharedImg: downloadURL,
+        comments: 0,
+        description: payload.description,
+      });
+    } else if (payload.video) {
+      await db.collection("articles").add({
+        actor: {
+          description: payload.user.email,
+          title: payload.user.displayName,
+          date: payload.timestamp,
+          image: payload.user.photoURL,
+        },
+        video: payload.video,
+        sharedImg: "",
+        comments: 0,
+        description: payload.description,
+      });
+    }
+  } catch (error) {
+    console.error("Error posting article:", error);
+  }
 };

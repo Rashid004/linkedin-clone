@@ -1,8 +1,11 @@
 /** @format */
 
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import ReactPlayer from "react-player";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { postArticleApi } from "../actions/auth";
+import { Timestamp } from "firebase/firestore";
 
 const Container = styled.div`
   position: fixed;
@@ -127,15 +130,78 @@ const ShareComment = styled.div`
     }
   }
 `;
+const PostButton = styled.button`
+  min-width: 60px;
+  border-radius: 20px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background: ${(user) => (user.disabled ? "rgba(0,0,0,0.8)" : "#0a66c2")};
+  color: ${(user) => (user.disabled ? "rgba(1,1,1,0.2)" : "white")};
+  &:hover {
+    background: ${(user) => (user.disabled ? "rgba(0,0,0,0.08)" : "#004182")};
+  }
+`;
+
+const UploadImage = styled.div``;
 
 function PostModal({ handleClick, showModel }) {
   const [editorText, setEditorText] = useState("");
+  const [shareImage, setShareImage] = useState("");
+  const [videoLink, setVideoLink] = useState("");
+  const [assetArea, setAssetArea] = useState("");
+
   const user = useSelector((state) => state.userState.user);
+  const dispatch = useDispatch();
+
+  const switchAssetArea = (area) => {
+    setShareImage("");
+    setVideoLink("");
+    setAssetArea(area);
+  };
 
   const handleReset = (e) => {
     setEditorText("");
+    setShareImage("");
+    setVideoLink("");
     handleClick(e);
   };
+
+  const handlePostArticle = (event) => {
+    event.preventDefault();
+
+    if (!user || !user.user) {
+      console.error("User object is undefined");
+      return;
+    }
+
+    const payload = {
+      image: shareImage,
+      video: videoLink,
+      user: user.user,
+      description: editorText,
+      timestamp: Timestamp.now(),
+    };
+    dispatch(postArticleApi(payload));
+    handleReset(event);
+  };
+
+  const handleChange = (event) => {
+    const file = event.target.files[0];
+
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert(`File is not an image, the file is a ${file.type}`);
+      return;
+    }
+    setShareImage(file);
+  };
+
+  if (!user) return null;
+
   return (
     <>
       {showModel && (
@@ -143,7 +209,7 @@ function PostModal({ handleClick, showModel }) {
           <Content>
             <Header>
               <h2>Create a post</h2>
-              <button onClick={(event) => handleReset(event)}>
+              <button onClick={handleReset}>
                 <img src="/images/close-icon.png" alt="" />
               </button>
             </Header>
@@ -154,7 +220,7 @@ function PostModal({ handleClick, showModel }) {
                 ) : (
                   <img src="/images/user.svg" alt="" />
                 )}
-                <span>{user.displayName}</span>
+                <span>{user.displayName || "Guest"}</span>
               </UserInfo>
               <Editor>
                 <textarea
@@ -163,14 +229,47 @@ function PostModal({ handleClick, showModel }) {
                   placeholder="What do you want to talk about?"
                   autoFocus={true}
                 />
+                {assetArea === "image" ? (
+                  <UploadImage>
+                    <input
+                      type="file"
+                      accept="image/gif, image/png, image/jpg"
+                      name="image"
+                      id="file"
+                      style={{ display: "none" }}
+                      onChange={handleChange}
+                    />
+                    <p>
+                      <label htmlFor="file">Select an image to share</label>
+                    </p>
+
+                    {shareImage && (
+                      <img src={URL.createObjectURL(shareImage)} alt="" />
+                    )}
+                  </UploadImage>
+                ) : (
+                  assetArea === "media" && (
+                    <>
+                      <input
+                        type="text"
+                        value={videoLink}
+                        placeholder="Please input a video link"
+                        onChange={(e) => setVideoLink(e.target.value)}
+                      />
+                      {videoLink && (
+                        <ReactPlayer width={"100%"} url={videoLink} />
+                      )}
+                    </>
+                  )
+                )}
               </Editor>
             </SharedContent>
             <ShareCreation>
               <AttachAssets>
-                <AssetButton>
+                <AssetButton onClick={() => switchAssetArea("image")}>
                   <img src="/images/share-img.png" alt="" />
                 </AssetButton>
-                <AssetButton>
+                <AssetButton onClick={() => switchAssetArea("media")}>
                   <img src="/images/share-video.png" alt="" />
                 </AssetButton>
               </AttachAssets>
@@ -180,6 +279,9 @@ function PostModal({ handleClick, showModel }) {
                   Anyone
                 </AssetButton>
               </ShareComment>
+              <PostButton disabled={!editorText} onClick={handlePostArticle}>
+                Post
+              </PostButton>
             </ShareCreation>
           </Content>
         </Container>
