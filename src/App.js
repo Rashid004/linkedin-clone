@@ -8,7 +8,7 @@ import { getUserAuth } from "./actions/auth.js";
 import { useEffect } from "react";
 
 function App() {
-  const user = useSelector((state) => state.userState.user);
+  // const user = useSelector((state) => state.userState.user);
   const dispatch = useDispatch();
 
   useEffect(() => {

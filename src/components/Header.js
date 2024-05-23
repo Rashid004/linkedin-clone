@@ -181,7 +181,9 @@ const Work = styled(User)`
 `;
 
 const Header = () => {
+  // const user = useSelector((state) => state.userState.user);
   const user = useSelector((state) => state.userState.user);
+
   const dispatch = useDispatch();
 
   const handleSignOut = () => {

@@ -1,42 +1,15 @@
 /** @format */
 
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import db, { auth, provider, storage } from "../firebase";
+import db, { authLogin, provider, storage } from "../Firebase";
+import { setLoadingStatus } from "../reducers/articleSlice";
 import { setUser } from "../reducers/userSlice";
-
-// export function signInAPI() {
-//   return (dispatch) => {
-//     auth
-//       .signInWithPopup(provider)
-//       .then((payload) => {
-//         // Handle successful authentication
-//         console.log(payload);
-//         dispatch(/* action to handle successful login */);
-//       })
-//       .catch((error) => {
-//         // Handle authentication error
-//         alert(error.message);
-//       });
-//   };
-// }
-
-// export const signInWithgoogle = async () => {
-//   try {
-//     const payload = await signInWithPopup(auth, provider);
-//     const { displayName, email, photoURL, uid } = payload.user;
-//     const userData = { displayName, email, photoURL, uid };
-//     console.log(payload);
-//     store.dispatch(setUser(userData));
-//   } catch (err) {
-//     console.log(err.message);
-//   }
-// };
 
 export const signInWithGoogle = () => {
   return async (dispatch) => {
     try {
-      const payload = await signInWithPopup(auth, provider);
-      console.log(payload);
+      const payload = await signInWithPopup(authLogin, provider);
+      console.log(payload.user);
       dispatch(setUser(payload.user));
     } catch (err) {
       console.log(err);
@@ -46,9 +19,10 @@ export const signInWithGoogle = () => {
 
 export function getUserAuth() {
   return (dispatch) => {
-    const userAuth = onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authLogin, (user) => {
       if (user) {
-        dispatch(setUser(userAuth.user));
+        console.log(user); // Corrected: pass user directly
+        dispatch(setUser(user));
       } else {
         dispatch(setUser(null));
       }
@@ -59,46 +33,62 @@ export function getUserAuth() {
 export const signOutApi = () => {
   return async (dispatch) => {
     try {
-      const authSignOut = await signOut(auth);
-      dispatch(setUser(authSignOut.null));
+      await signOut(authLogin);
+      dispatch(setUser(null));
     } catch (err) {
       console.log(err);
     }
   };
 };
 
-export const postArticleApi = async (payload) => {
-  try {
-    if (payload.image) {
-      const imageRef = storage.ref(`images/${payload.image.name}`);
-      const uploadTask = imageRef.put(payload.image);
+export function postArticleAPI(payload) {
+  return (dispatch) => {
+    dispatch(setLoadingStatus(true));
 
-      uploadTask.on("state_changed", (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Progress: ${progress}%`);
+    if (!payload.user) {
+      console.log("User information is missing.");
+      dispatch(setLoadingStatus(false));
+      return;
+    }
+    if (payload.image !== "") {
+      const storageRef = storage.ref(); // Get the root reference
+      const imageRef = storageRef.child(`images/${payload.image.name}`); // Create a reference to the image file
 
-        if (snapshot.state === "RUNNING") {
+      const upload = imageRef.put(payload.image); // Upload the image
+
+      upload.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(`Progress: ${progress}%`);
-        }
-      });
-
-      const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-
-      await db.collection("articles").add({
-        actor: {
-          description: payload.user.email,
-          title: payload.user.displayName,
-          date: payload.timestamp,
-          image: payload.user.photoURL,
+          if (snapshot.state === "RUNNING") {
+            console.log(`Progress: ${progress}%`);
+          }
         },
-        video: payload.video,
-        sharedImg: downloadURL,
-        comments: 0,
-        description: payload.description,
-      });
+        (error) => console.log(error.code),
+        async () => {
+          const downloadURL = await upload.snapshot.ref.getDownloadURL(); // Get the download URL
+
+          await db.collection("articles").add({
+            actor: {
+              description: payload.user.email,
+              title: payload.user.displayName,
+              date: payload.timestamp,
+              image: payload.user.photoURL,
+            },
+            video: payload.video,
+            sharedImg: downloadURL,
+            comments: 0,
+            description: payload.description,
+          });
+
+          dispatch(setLoadingStatus(false));
+        }
+      );
     } else if (payload.video) {
-      await db.collection("articles").add({
+      console.log(` payload video:${payload.user}`);
+      db.collection("articles").add({
         actor: {
           description: payload.user.email,
           title: payload.user.displayName,
@@ -110,8 +100,10 @@ export const postArticleApi = async (payload) => {
         comments: 0,
         description: payload.description,
       });
+      dispatch(setLoadingStatus(false));
+    } else {
+      dispatch(setLoadingStatus(false));
+      console.log("No image or video provided");
     }
-  } catch (error) {
-    console.error("Error posting article:", error);
-  }
-};
+  };
+}

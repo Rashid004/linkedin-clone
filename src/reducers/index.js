@@ -1,11 +1,14 @@
 /** @format */
 
+// reducers/index.js
+
 import { combineReducers } from "redux";
-import userReducer from "./userSlice";
+import articleReducer from "./articleSlice";
+import userSlice from "./userSlice";
 
 const rootReducer = combineReducers({
-  userState: userReducer,
-  // Add other reducers here
+  article: articleReducer,
+  userState: userSlice,
 });
 
 export default rootReducer;

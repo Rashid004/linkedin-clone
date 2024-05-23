@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const Home = (props) => {
+  // const user = useSelector((state) => state.userState.user);
   const user = useSelector((state) => state.userState.user);
+
   const navigate = useNavigate();
 
   useEffect(() => {

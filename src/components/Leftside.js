@@ -159,6 +159,7 @@ const CommunityCard = styled(ArtCard)`
 `;
 
 const Leftside = (props) => {
+  // const user = useSelector((state) => state.userState.user);
   const user = useSelector((state) => state.userState.user);
 
   return (

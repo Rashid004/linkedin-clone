@@ -140,7 +140,9 @@ const Google = styled.button`
 `;
 const Login = (props) => {
   const navigate = useNavigate();
+  // const user = useSelector((state) => state.userState.user);
   const user = useSelector((state) => state.userState.user);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

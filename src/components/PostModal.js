@@ -4,7 +4,7 @@ import { useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { postArticleApi } from "../actions/auth";
+import { postArticleAPI } from "../actions/auth";
 import { Timestamp } from "firebase/firestore";
 
 const Container = styled.div`
@@ -142,7 +142,12 @@ const PostButton = styled.button`
   }
 `;
 
-const UploadImage = styled.div``;
+const UploadImage = styled.div`
+  text-align: center;
+  img {
+    width: 100%;
+  }
+`;
 
 function PostModal({ handleClick, showModel }) {
   const [editorText, setEditorText] = useState("");
@@ -150,8 +155,8 @@ function PostModal({ handleClick, showModel }) {
   const [videoLink, setVideoLink] = useState("");
   const [assetArea, setAssetArea] = useState("");
 
-  const user = useSelector((state) => state.userState.user);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.userState.user);
 
   const switchAssetArea = (area) => {
     setShareImage("");
@@ -166,23 +171,29 @@ function PostModal({ handleClick, showModel }) {
     handleClick(e);
   };
 
-  const handlePostArticle = (event) => {
-    event.preventDefault();
-
-    if (!user || !user.user) {
+  const handlePostArticle = (e) => {
+    console.log("post malon");
+    console.log(user);
+    e.preventDefault();
+    console.log("post malon2 ");
+    if (!user) {
       console.error("User object is undefined");
+      return;
+    }
+    if (e.target !== e.currentTarget) {
+      console.log("marlin");
       return;
     }
 
     const payload = {
       image: shareImage,
       video: videoLink,
-      user: user.user,
+      user: user,
       description: editorText,
       timestamp: Timestamp.now(),
     };
-    dispatch(postArticleApi(payload));
-    handleReset(event);
+    dispatch(postArticleAPI(payload));
+    handleReset(e);
   };
 
   const handleChange = (event) => {

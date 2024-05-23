@@ -194,7 +194,7 @@ const SocialAction = styled.div`
 `;
 
 function Main() {
-  const [showModel, setShowModel] = useState("close");
+  const [showModel, setShowModel] = useState(false);
 
   const handleClick = (e) => {
     e.preventDefault();
