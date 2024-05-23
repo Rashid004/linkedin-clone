@@ -80,7 +80,7 @@ Styled Components: CSS styling is implemented using styled components, offering 
 
 Usage:
 
-To utilize the application, users can navigate to the provided URL <h1>** rad-unicorn-0a326c.netlify.app and **</h1>sign up or log in to access the platform's features. Upon authentication, users can create and share posts, interact with other users' posts, and enjoy a dynamic social media experience.
+To utilize the application, users can navigate to the provided URL <div>\*\* <a href="rad-unicorn-0a326c.netlify.app and ">Click to Show</a></div>sign up or log in to access the platform's features. Upon authentication, users can create and share posts, interact with other users' posts, and enjoy a dynamic social media experience.
 
 Deployment:
 
