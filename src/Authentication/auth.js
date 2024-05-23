@@ -2,7 +2,7 @@
 
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import db, { authLogin, provider, storage } from "../Firebase";
-import { setLoadingStatus } from "../reducers/articleSlice";
+import { getArticles, setLoadingStatus } from "../reducers/articleSlice";
 import { setUser } from "../reducers/userSlice";
 
 export const signInWithGoogle = () => {
@@ -107,3 +107,16 @@ export function postArticleAPI(payload) {
     }
   };
 }
+
+export const getArticlesApi = () => {
+  return (dispatch) => {
+    let payload;
+    db.collection("articles")
+      .orderBy("actor.date", "desc")
+      .onSnapshot((snapshot) => {
+        payload = snapshot.docs.map((doc) => doc.data());
+        dispatch(getArticles(payload));
+        console.log(payload);
+      });
+  };
+};

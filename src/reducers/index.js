@@ -7,7 +7,7 @@ import articleReducer from "./articleSlice";
 import userSlice from "./userSlice";
 
 const rootReducer = combineReducers({
-  article: articleReducer,
+  userArticleState: articleReducer,
   userState: userSlice,
 });
 

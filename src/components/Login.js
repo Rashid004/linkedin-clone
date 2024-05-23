@@ -1,11 +1,11 @@
 /** @format */
 
 import styled from "styled-components";
-// import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { signInWithGoogle } from "../actions/auth";
+import { signInWithGoogle } from "../Authentication/auth";
+
 const Container = styled.div`
   padding: 0;
 `;
@@ -138,9 +138,8 @@ const Google = styled.button`
     color: rgba(0, 0, 0, 0.75);
   }
 `;
-const Login = (props) => {
+const Login = () => {
   const navigate = useNavigate();
-  // const user = useSelector((state) => state.userState.user);
   const user = useSelector((state) => state.userState.user);
 
   const dispatch = useDispatch();
@@ -180,13 +179,5 @@ const Login = (props) => {
     </Container>
   );
 };
-// const mapStateToProps = (state) => {
-//   return {
-//     user: state.userState.user,
-//   };
-// };
-// const mapDispatchToProps = (dispatch) => ({
-//   signInAPI: () => dispatch(signInAPI()),
-// });
 
 export default Login;

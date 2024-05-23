@@ -3,13 +3,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { signOutApi } from "../actions/auth";
+import { signOutApi } from "../Authentication/auth";
 
 const Container = styled.div`
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   left: 0;
-  padding: 0 24px;
+  padding: 10px 24px;
   position: fixed;
   top: 0;
   width: 100vw;
@@ -33,8 +33,10 @@ const Search = styled.div`
   opacity: 1;
   flex-grow: 1;
   position: relative;
+
   & > div {
     max-width: 280px;
+
     input {
       border: none;
       box-shadow: none;
@@ -69,13 +71,18 @@ const SearchIcon = styled.div`
 
 const Nav = styled.nav`
   margin-left: auto;
+  margin-right: 50px;
   display: block;
+
   @media (max-width: 768px) {
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: -4px;
     background: white;
     width: 100%;
+    height: 47px;
+    padding-top: 5px;
+    padding-left: 10px;
   }
 `;
 
@@ -102,6 +109,7 @@ const NavListWrap = styled.ul`
 const NavList = styled.li`
   display: flex;
   align-items: center;
+
   a {
     align-items: center;
     background: transparent;
@@ -111,10 +119,9 @@ const NavList = styled.li`
     font-weight: 400;
     justify-content: center;
     line-height: 1.5;
-    min-height: 52px;
+    min-height: 42px;
     min-width: 80px;
     position: relative;
-    text-decoration: none;
 
     span {
       color: rgba(0, 0, 0, 0.6);
@@ -144,18 +151,18 @@ const SignOut = styled.div`
   border-radius: 0 0 5px 5px;
   width: 100px;
   height: 40px;
-  display: none;
   font-size: 16px;
-  text-align: center;
   transition-duration: 167ms;
+  text-align: center;
+  display: none;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    top: -30px;
+  }
 `;
 
 const User = styled(NavList)`
-  a > svg {
-    width: 24px;
-    border-radius: 50%;
-  }
   a > img {
     width: 24px;
     height: 24px;
@@ -169,8 +176,8 @@ const User = styled(NavList)`
 
   &:hover {
     ${SignOut} {
-      display: flex;
       align-items: center;
+      display: flex;
       justify-content: center;
     }
   }
@@ -181,7 +188,6 @@ const Work = styled(User)`
 `;
 
 const Header = () => {
-  // const user = useSelector((state) => state.userState.user);
   const user = useSelector((state) => state.userState.user);
 
   const dispatch = useDispatch();

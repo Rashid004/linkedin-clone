@@ -4,7 +4,7 @@ import { useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { postArticleAPI } from "../actions/auth";
+import { postArticleAPI } from "../Authentication/auth";
 import { Timestamp } from "firebase/firestore";
 
 const Container = styled.div`
@@ -110,6 +110,10 @@ const AssetButton = styled.button`
   height: 40px;
   min-width: auto;
   color: rgba(0, 0, 0, 0.5);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
 `;
 const AttachAssets = styled.div`
   align-items: center;
@@ -135,6 +139,7 @@ const PostButton = styled.button`
   border-radius: 20px;
   padding-left: 16px;
   padding-right: 16px;
+  cursor: pointer;
   background: ${(user) => (user.disabled ? "rgba(0,0,0,0.8)" : "#0a66c2")};
   color: ${(user) => (user.disabled ? "rgba(1,1,1,0.2)" : "white")};
   &:hover {
@@ -144,8 +149,17 @@ const PostButton = styled.button`
 
 const UploadImage = styled.div`
   text-align: center;
+  cursor: pointer;
   img {
     width: 100%;
+  }
+  p {
+    display: inline-block;
+    padding: 4px 2px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid gray;
+    border-radius: 4px;
   }
 `;
 

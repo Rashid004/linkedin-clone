@@ -129,6 +129,12 @@ const CommunityCard = styled(ArtCard)`
   text-align: left;
   display: flex;
   flex-direction: column;
+  div {
+    font-size: 14px;
+    padding-left: 12px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
   a {
     color: black;
     padding: 4px 12px 4px 12px;
@@ -159,7 +165,6 @@ const CommunityCard = styled(ArtCard)`
 `;
 
 const Leftside = (props) => {
-  // const user = useSelector((state) => state.userState.user);
   const user = useSelector((state) => state.userState.user);
 
   return (
@@ -185,6 +190,11 @@ const Leftside = (props) => {
             </div>
             <img src="/images/widget-icon.svg" alt="" />
           </a>
+          <a>
+            <div>
+              <span>Profile viewer</span>
+            </div>
+          </a>
         </Widget>
         <Item>
           <span>
@@ -194,6 +204,9 @@ const Leftside = (props) => {
         </Item>
       </ArtCard>
       <CommunityCard>
+        <div>
+          <span>Recents</span>
+        </div>
         <a>
           <span>Groups</span>
         </a>
