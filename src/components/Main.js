@@ -228,117 +228,113 @@ function Main() {
   };
   return (
     <>
-      {articles.length === 0 ? (
-        <p>There are no articles</p>
-      ) : (
-        <Container>
-          <ShareBox>
-            <div>
-              {user && user.photoURL ? (
-                <img src={user.photoURL} alt="" />
-              ) : (
-                <img src="/images/user.svg" alt="" />
-              )}
-              <button onClick={handleClick} disabled={loading ? true : false}>
-                Start a post
-              </button>
-            </div>
-            <div>
-              <button>
-                <img src="/images/photo-icon.svg" alt="" />
-                <span>Photo</span>
-              </button>
-              <button>
-                <img src="/images/video-icon.svg" alt="" />
-                <span>Video</span>
-              </button>
-              <button>
-                <img src="/images/event-icon.svg" alt="" />
-                <span>Event</span>
-              </button>
-              <button>
-                <img src="/images/article-icon.svg" alt="" />
-                <span>Write artical</span>
-              </button>
-            </div>
-          </ShareBox>
-          <Content>
-            {loading && <img src="/images/loading-spinner.svg" alt="" />}
+      <Container>
+        <ShareBox>
+          <div>
+            {user && user.photoURL ? (
+              <img src={user.photoURL} alt="" />
+            ) : (
+              <img src="/images/user.svg" alt="" />
+            )}
+            <button onClick={handleClick} disabled={loading ? true : false}>
+              Start a post
+            </button>
+          </div>
+          <div>
+            <button>
+              <img src="/images/photo-icon.svg" alt="" />
+              <span>Photo</span>
+            </button>
+            <button>
+              <img src="/images/video-icon.svg" alt="" />
+              <span>Video</span>
+            </button>
+            <button>
+              <img src="/images/event-icon.svg" alt="" />
+              <span>Event</span>
+            </button>
+            <button>
+              <img src="/images/article-icon.svg" alt="" />
+              <span>Write artical</span>
+            </button>
+          </div>
+        </ShareBox>
+        <Content>
+          {loading && <img src="/images/loading-spinner.svg" alt="" />}
 
-            {articles.length > 0 &&
-              articles.map((article, key) => (
-                <Article key={key}>
-                  <SharedActor>
-                    <a>
-                      <img src={article.actor.image} alt="" />
-                      <div>
-                        <span>{article.actor.title}</span>
-                        <span>{article.actor.description}</span>
-                        <span>
-                          {article.actor.date.toDate().toLocaleDateString()}
-                        </span>
-                      </div>
-                    </a>
+          {articles.length > 0 &&
+            articles.map((article, key) => (
+              <Article key={key}>
+                <SharedActor>
+                  <a>
+                    <img src={article.actor.image} alt="" />
+                    <div>
+                      <span>{article.actor.title}</span>
+                      <span>{article.actor.description}</span>
+                      <span>
+                        {article.actor.date.toDate().toLocaleDateString()}
+                      </span>
+                    </div>
+                  </a>
+                  <button>
+                    <img src="/images/ellipsis.svg" alt="" />
+                  </button>
+                </SharedActor>
+                <Description>{article.description}</Description>
+                <SharedImage>
+                  <a>
+                    {!article.sharedImg && article.video ? (
+                      <ReactPlayer width={"100%"} url={article.video} />
+                    ) : (
+                      article.sharedImg && (
+                        <img src={article.sharedImg} alt="" />
+                      )
+                    )}
+                  </a>
+                </SharedImage>
+                <SocialCounts>
+                  <li>
                     <button>
-                      <img src="/images/ellipsis.svg" alt="" />
+                      <img
+                        src="https://static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb"
+                        alt=""
+                      />
+                      <img
+                        src="https://static-exp1.licdn.com/sc/h/5thsbmikm6a8uov24ygwd914f"
+                        alt=""
+                      />
+                      <span>75</span>
                     </button>
-                  </SharedActor>
-                  <Description>{article.description}</Description>
-                  <SharedImage>
-                    <a>
-                      {!article.sharedImg && article.video ? (
-                        <ReactPlayer width={"100%"} url={article.video} />
-                      ) : (
-                        article.sharedImg && (
-                          <img src={article.sharedImg} alt="" />
-                        )
-                      )}
-                    </a>
-                  </SharedImage>
-                  <SocialCounts>
-                    <li>
-                      <button>
-                        <img
-                          src="https://static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb"
-                          alt=""
-                        />
-                        <img
-                          src="https://static-exp1.licdn.com/sc/h/5thsbmikm6a8uov24ygwd914f"
-                          alt=""
-                        />
-                        <span>75</span>
-                      </button>
-                    </li>
-                    <li>
-                      <a>{article.comments}</a>
-                    </li>
-                  </SocialCounts>
+                  </li>
+                  <li>
+                    <a>{article.comments}</a>
+                  </li>
+                </SocialCounts>
 
-                  <SocialAction>
-                    <button>
-                      <img src="/images/like-icon.png" alt="" />
-                      <span>Likes</span>
-                    </button>
-                    <button>
-                      <img src="/images/comments-icon.png" alt="" />
-                      <span>Likes</span>
-                    </button>
-                    <button>
-                      <img src="/images/share-icon.png" alt="" />
-                      <span>Likes</span>
-                    </button>
-                    <button>
-                      <img src="/images/send-icon.png" alt="" />
-                      <span>Likes</span>
-                    </button>
-                  </SocialAction>
-                </Article>
-              ))}
-          </Content>
+                <SocialAction>
+                  <button>
+                    <img src="/images/like-icon.png" alt="" />
+                    <span>Likes</span>
+                  </button>
+                  <button>
+                    <img src="/images/comments-icon.png" alt="" />
+                    <span>Likes</span>
+                  </button>
+                  <button>
+                    <img src="/images/share-icon.png" alt="" />
+                    <span>Likes</span>
+                  </button>
+                  <button>
+                    <img src="/images/send-icon.png" alt="" />
+                    <span>Likes</span>
+                  </button>
+                </SocialAction>
+              </Article>
+            ))}
+        </Content>
 
-          <PostModal showModel={showModel} handleClick={handleClick} />
-        </Container>
-      )}
+        <PostModal showModel={showModel} handleClick={handleClick} />
+      </Container>
     </>
   );
 }
