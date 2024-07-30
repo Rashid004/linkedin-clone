@@ -1,7 +1,7 @@
 /** @format */
 
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import db, { authLogin, provider, storage } from "../Firebase";
+import db, { authLogin, provider, storage } from "../firebase";
 import { getArticles, setLoadingStatus } from "../reducers/articleSlice";
 import { setUser } from "../reducers/userSlice";
 
